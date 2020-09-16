@@ -67,7 +67,7 @@ class MoviesForm extends React.Component{
                     type="submit" 
                     className="btn btn-primary float-right"
                 >
-                    Submit
+                    Guardar
                 </button>
             </form>
         </div> 

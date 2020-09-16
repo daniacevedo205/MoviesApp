@@ -10,7 +10,10 @@ class MoviesNew extends React.Component{
             fecha:'' ,
             calificacion:'',
             img:''
-        }
+        },
+        loading:false,
+        error: null, 
+        history:''
     }
     handleChange = e =>{  
         this.setState({
@@ -21,21 +24,34 @@ class MoviesNew extends React.Component{
         })
     }
     handleSubmit = async e =>{
+        this.setState({
+            loading:true
+        })
         e.preventDefault()
+        const searchParams = Object.keys(this.state.form).map((key) => {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(this.state.form[key]);
+          }).join('&');
         try {
             let config = {
                 method: 'POST',
-                headers:{
-                    'Accept':'application/json',
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify(this.state.form)
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                  },
+                  body: searchParams
             }
             let res = await fetch('http://localhost:8000/movie',config)
             let json = await res.json()
           
-        } catch (error) {
+            this.setState({
+                loading:false
+            })
             
+            this.props.history.push('/movie')
+        } catch (error) {
+            this.setState({
+                loading:false,
+                error
+            })
         }
     }
 
